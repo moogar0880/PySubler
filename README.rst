@@ -2,7 +2,7 @@ PySubler
 ========
 
 Simple Python interface to the SublerCLI utility to make scripting metadata
-tagging with SublerCLI even easier.
+tagging with `SublerCLI <https://code.google.com/p/subler/wiki/SublerCLIHelp>`_. even easier.
 
 Atoms
 -----
