@@ -1,5 +1,8 @@
 #!/usr/bin/env python
-from distutils.core import setup
+try:
+    from setuptools import setup
+except ImportError:
+    from distutils.core import setup
 
 try:
     import subler
@@ -15,7 +18,7 @@ with open('README.rst') as f:
 setup(
     name='subler',
     version=subler.__version__,
-    description='Python HTTP for Humans.',
+    description='Python interface to the Subler style metadata tagging.',
     long_description=readme,
     author='Jonathan Nappi',
     author_email='moogar@comcast.net',
@@ -29,10 +32,9 @@ setup(
         'Intended Audience :: Developers',
         'Natural Language :: English',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.3',
+        'Programming Language :: Python :: 3.4',
 
     ),
 )

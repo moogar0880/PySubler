@@ -2,46 +2,7 @@
 format metadata via the SublerCLI. By simply creating new metadata
 :class:`Atom`'s and specifying any additionally desired variables in an instance
 of :class:`Subler` you can quickly execute the tagging of metadata to a
-specified file. The following are a list of valid :class:`Atom` tags and the
-type expected to be found in the :class:`Atom`'s value field
-
-=============================   ===========================
-Tag                             Type
-=============================   ===========================
-Name                            string
-Artist                          string
-Album Artist                    string
-Album                           string
-Grouping                        string
-Composer                        string
-Comments                        string
-Genre                           string
-Release Date                    YYYY-MM-DD string
-Track #  track#/totalTracks#    string
-Disk #   disk#/totalDisks#      string
-TV Show                         string
-TV Episode #                    string
-TV Network                      string
-TV Episode ID                   number
-TV Season                       string
-Description                     string
-Long Description                string
-Rating Annotation               string
-Studio                          string
-Cast                            string
-Director                        string
-Codirector                      string
-Producers                       string
-Screenwriters                   string
-Lyrics                          string
-Copyright                       string
-Encoding Tool                   string
-Encoded By                      string
-contentID                       string
-HD Video                        bool
-Gapless                         bool
-Artwork                         string, abspath to the file
-=============================   ===========================
+specified file.
 """
 __author__ = 'Jon Nappi'
 __all__ = ['Atom', 'Subler']
@@ -60,12 +21,23 @@ class Atom(_Atom):
     """
     _valid_tags = ('Artist', 'Album Artist', 'Album', 'Grouping', 'Composer',
                    'Comments', 'Genre', 'Release Date', 'Track #', 'Disk #',
-                   'TV Show', 'TV Episode #', 'TV Network', 'TV Episode ID',
-                   'TV Season', 'Description', 'Long Description', 'HD Video',
+                   'Tempo', 'TV Show', 'TV Episode #', 'TV Network',
+                   'TV Episode ID', 'TV Season', 'Description',
+                   'Long Description', 'Series Description', 'HD Video',
                    'Rating Annotation', 'Studio', 'Cast', 'Director', 'Gapless',
                    'Codirector', 'Producers', 'Screenwriters', 'Lyrics',
-                   'Copyright', 'Encoding Tool', 'Encoded By', 'contentID',
-                   'Artwork')
+                   'Copyright', 'Encoding Tool', 'Encoded By', 'Keywords',
+                   'Category', 'contentID', 'artistID', 'playlistID', 'genreID',
+                   'composerID', 'XID', 'iTunes Account', 'iTunes Account Type',
+                   'iTunes Country', 'Track Sub-Title', 'Song Description',
+                   'Art Director', 'Arranger', 'Lyricist', 'Acknowledgement',
+                   'Conductor', 'Linear Notes', 'Record Company',
+                   'Original Artist', 'Phonogram Rights', 'Producer',
+                   'Performer', 'Publisher', 'Sound Engineer', 'Soloist',
+                   'Credits', 'Thanks', 'Online Extras', 'Executive Producer',
+                   'Sort Name', 'Sort Artist', 'Sort Album Artist',
+                   'Sort Album', 'Sort Composer', 'Sort TV Show', 'Artwork',
+                   'Name', 'Rating', 'Media Kind')
 
     def is_valid(self):
         """Performs a check to see if the data in this :class:`Atom` is valid"""
@@ -79,7 +51,7 @@ class Atom(_Atom):
 
 class Subler(object):
     """An OO interface to the SublerCLI"""
-    __executable = '/usr/bin/SublerCLI'
+    __executable = 'SublerCLI'
 
     def __init__(self, source, dest=None, chapters=None, delay=None,
                  chapters_preview=False, height=None, language='English',
@@ -199,11 +171,13 @@ class Subler(object):
 
         if self.dest:
             cmd += '-dest {} '.format(self.dest)
-        cmd += '-metadata "{Media Kind:%s}" ' % self.media_kind
+        self.metadata.append(Atom('Media Kind', self.media_kind))
+        if self._rating is not None:
+            self.metadata.append(Atom('Rating', self.rating))
         if self.explicitness:
-            cmd += '-t "{Content Rating:%s" ' % self.explicitness
+            self.metadata.append(Atom('Content Rating', self.explicitness))
         tags = [atom.data for atom in self.metadata if atom.is_valid()]
-        cmd += ' '.join(['-metadata' ,''.join(tags)])
+        cmd += ' '.join(['-metadata', ''.join(tags)])
         if self.optimize:
-            cmd += ' -optimize '
+            cmd += ' -optimize'
         return subprocess.check_output(cmd, shell=True).decode('UTF-8')
