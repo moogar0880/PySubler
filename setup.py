@@ -10,22 +10,22 @@ except ImportError:
     pass
 
 packages = ['subler']
-requires = []
 
 with open('README.rst') as f:
     readme = f.read()
+with open('HISTORY.rst') as f:
+    history = f.read()
 
 setup(
     name='subler',
     version=subler.__version__,
     description='Python interface to the Subler style metadata tagging.',
-    long_description=readme,
+    long_description='\n\n'.join([readme, history]),
     author='Jonathan Nappi',
     author_email='moogar@comcast.net',
     url='https://github.com/moogar0880/PySubler',
     packages=packages,
     include_package_data=True,
-    install_requires=requires,
     zip_safe=False,
     classifiers=(
         'Development Status :: 5 - Production/Stable',
