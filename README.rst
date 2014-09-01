@@ -26,7 +26,7 @@ method, like so,::
 
 Valid Tag Table
 ^^^^^^^^^^^^^^^
-Also probably worth noting is the list of valid Tag attributes and their types:
+Also probably worth noting is the list of valid Tag attributes:
 
 - Name
 - Artist
