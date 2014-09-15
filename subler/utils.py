@@ -9,7 +9,11 @@ def subler_executable():
     """Find a localized subler executable and return it's path. If no executable
     can be found, None is returned
     """
-    executable = subprocess.check_output('which SublerCLI', shell=True).strip()
+    try:
+        executable = subprocess.check_output('which SublerCLI',
+                                             shell=True).strip()
+    except subprocess.CalledProcessError:
+        return ''
     if sys.version_info[0] == 3:
         executable = executable.decode('UTF-8')
     if executable == '':

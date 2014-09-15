@@ -4,7 +4,7 @@ format metadata via the SublerCLI.
 
 from .subler import *
 
-version_info = (0, 3, 0)
+version_info = (0, 3, 1)
 
 __author__ = 'Jon Nappi'
 __version__ = '.'.join([str(x) for x in version_info])
