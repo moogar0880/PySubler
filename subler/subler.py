@@ -1,15 +1,17 @@
-"""This module provides an easily scriptable interface to tagging x264 video
-format metadata via the SublerCLI. By simply creating new metadata
+"""This module provides an easily scriptable interface to tagging an assortment
+of media types including x264 video, AAC audio, and many others with iTunes
+formatted metadata via the SublerCLI. By simply creating new metadata
 :class:`Atom`'s and specifying any additionally desired variables in an instance
 of :class:`Subler` you can quickly execute the tagging of metadata to a
 specified file.
 """
-__author__ = 'Jon Nappi'
-__all__ = ['Atom', 'Subler']
-
-
 import subprocess
 from collections import namedtuple
+
+from .utils import subler_executable
+
+__author__ = 'Jon Nappi'
+__all__ = ['Atom', 'Subler']
 
 _Atom = namedtuple('_Atom', ['tag', 'value'])
 
@@ -51,7 +53,7 @@ class Atom(_Atom):
 
 class Subler(object):
     """An OO interface to the SublerCLI"""
-    __executable = 'SublerCLI'
+    __executable = subler_executable()
 
     def __init__(self, source, dest=None, chapters=None, delay=None,
                  chapters_preview=False, height=None, language='English',
@@ -63,24 +65,24 @@ class Subler(object):
         :param dest: The destination file to save any changes to
         :param chapters: A .txt file with chapter information
         :param chapters_preview: Boolean option to create an additional video
-                                 track with the preview of the chapters. Used by
-                                 iTunes and some other media clients.
+            track with the preview of the chapters. Used by iTunes and some
+            other media clients.
         :param delay: The delay of the subtitle track in ms
         :param height: The pixel height of the subtitle track
         :param language: The language of the subtitle track (i.e. English)
         :param remove: Boolean flag for remove all existing subtitles tracks
         :param optimize: Boolean flag for optimizing the file by moving the
-                         moov atom at the begining and interleaving the samples
+            moov atom at the begining and interleaving the samples
         :param downmix: downmix audio (mono, stereo, dolby, pl2) from the source
-                        file
+            file
         :param rating: A valid US, UK, or German content rating
         :param media_kind: The type of media represented by the source file.
-                           Valid values are Music, Audiobook, Music Video,
-                           Movie, TV Show, Booklet, or Ringtone
+            Valid values are Music, Audiobook, Music Video, Movie, TV Show,
+            Booklet, or Ringtone
         :param explicit: The explicit-ness warning of the content in the source
-                         file. Valid values are: None, "Clean", and "Explicit"
+            file. Valid values are: None, "Clean", and "Explicit"
         :param metadata: A list of :class:`Atom`'s to be applied to the source
-                         file as metadata
+            file as metadata
         """
         self.source = source
         self.dest = dest or self.source
@@ -100,21 +102,39 @@ class Subler(object):
         self.explicit = explicit
         self.metadata = metadata
 
+    @property
     def version(self):
-        """Return the current executable version"""
-        cmd = '{} --version'.format(self.__executable)
-        return subprocess.check_output(cmd, shell=True).decode('UTF-8')
+        """The current version of your systems SublerCLI package"""
+        cmd = '{} -version'.format(self.__executable)
+        output = subprocess.check_output(cmd, shell=True)
+        return output.decode('UTF-8').strip()
 
-    def list_tracks(self):
-        """list the tracks of the source file"""
-        cmd = '{} --listtracks'.format(self.__executable)
-        return subprocess.check_output(cmd, shell=True).decode('UTF-8')
+    @property
+    def tracks(self):
+        """A list of tracks found the source file"""
+        cmd = '{} -source {} -listtracks'.format(self.__executable, self.source)
+        output = subprocess.check_output(cmd, shell=True)
+        return output.decode('UTF-8').strip().split('\n')
+
+    @property
+    def existing_metadata_raw(self):
+        """The metadata currently contained in the source file"""
+        cmd = '{} -source {} -listmetadata'.format(self.__executable,
+                                                   self.source)
+        output = subprocess.check_output(cmd, shell=True)
+        return output.decode('UTF-8').strip().split('\n')
 
     @property
     def existing_metadata(self):
-        """The metadata currently contained in the source file"""
-        cmd = '{} --listmetadata'.format(self.__executable)
-        return subprocess.check_output(cmd, shell=True).decode('UTF-8')
+        """Atom representations of the metadata currently contained in the
+        source file
+        """
+        raw = self.existing_metadata_raw
+        atoms = []
+        for s in raw:
+            key, val = s[:s.find(':')].strip(), s[s.find(':')+1:].strip()
+            atoms.append(Atom(key, val))
+        return atoms
 
     @property
     def rating(self):
@@ -167,10 +187,10 @@ class Subler(object):
         """Apply the specified metadata to the source file and output it to
         the specified destination file
         """
-        cmd = '{} -source {} '.format(self.__executable, self.source)
+        cmd = '{} -source "{}" '.format(self.__executable, self.source)
 
         if self.dest:
-            cmd += '-dest {} '.format(self.dest)
+            cmd += '-dest "{}" '.format(self.dest)
         self.metadata.append(Atom('Media Kind', self.media_kind))
         if self._rating is not None:
             self.metadata.append(Atom('Rating', self.rating))
