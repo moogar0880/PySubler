@@ -83,7 +83,7 @@ helpful to someone trying to use this module, their behavior is documented below
     :show-inheritance:
 
 Valid Tags
-^^^^^^^^^^
+----------
 Also probably worth noting is the list of valid Tag names as the official
 documentation appears to be out of date:
 
