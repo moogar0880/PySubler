@@ -7,11 +7,13 @@ __all__ = ['AtomCollection', 'tag_dict']
 
 
 class AtomCollection(dict):
-    """A dictionary collection of Atom instances. When a tag is added the tag
-    for it is used as the key to the dictionary, the value for which is an Atom
-    instance. When you key back on an item already in the dictionary the value
-    of that Atom is returned. Thus, if you know a key 'Artist' exists, you can
-    get the value of that tag by doing ``my_collection['Artist']``
+    """A dictionary collection of :class:`~subler.subler.Atom` instances. When a
+    tag is added, the tag for it is used as the key to the dictionary, the value
+    for which is an :class:`~subler.subler.Atom` instance. When you key back on
+    an item already in the dictionary the value of that
+    :class:`~subler.subler.Atom` is returned. Thus, if you know a key 'Artist'
+    exists, you can get the value of that tag by doing
+    ``my_collection['Artist']``
     """
     def get(self, k, d=None):
         """ D.get(k[,d]) -> D[k] if k in D, else d.  d defaults to None. """
@@ -21,7 +23,9 @@ class AtomCollection(dict):
 
     @property
     def atoms(self):
-        """The list of :class:`Atom`'s contained in this collection"""
+        """The list of :class:`~subler.subler.Atom`'s contained in this
+        collection
+        """
         return [super(AtomCollection, self).__getitem__(key) for key in self]
 
     def items(self):
@@ -32,11 +36,13 @@ class AtomCollection(dict):
         return items
 
     def __getitem__(self, key):
-        """Return the value of the Atom at *key*"""
+        """Return the value of the :class:`~subler.subler.Atom` at *key*"""
         return super(AtomCollection, self).__getitem__(key).value
 
     def __setitem__(self, key, val):
-        """Custom __setitem__ for entering Atoms based on *key*, *val*"""
+        """Custom __setitem__ for entering :class:`~subler.subler.Atom`s based
+        on *key*, *val*
+        """
         super(AtomCollection, self).__setitem__(key, Atom(key, val))
 
 
