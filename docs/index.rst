@@ -39,6 +39,7 @@ Contents:
    install
    subler
    tools
+   cli
    utils
 
 
