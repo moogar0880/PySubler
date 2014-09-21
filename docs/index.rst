@@ -38,6 +38,9 @@ Contents:
 
    install
    subler
+   tools
+   cli
+   utils
 
 
 Indices and tables

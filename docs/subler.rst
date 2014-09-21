@@ -64,23 +64,13 @@ of metadata
     >>> metadata = [artist, album, track, artwork]
     >>> tagger = Subler('/path/to/papercut.mp3', media_kind='Music',
                         explicit='Explicit', metadata=metadata)
-    >>> tagger.tag
+    >>> tagger.tag()
 
 Tagging other Media Types
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 Tagging a Audiobook, Music Video, Movie, TV Show, Booklet, or Ringtone is
 fundamentally no different than an audio file, you just need to remember to
 explicity set the media_kind attribute for anything that isn't a Movie.
-
-subler.utils module
--------------------
-Although the functions contained in this util module will likely be less than
-helpful to someone trying to use this module, their behavior is documented below
-
-.. automodule:: subler.utils
-    :members:
-    :undoc-members:
-    :show-inheritance:
 
 Valid Tags
 ----------

@@ -5,6 +5,7 @@ formatted metadata via the SublerCLI. By simply creating new metadata
 of :class:`Subler` you can quickly execute the tagging of metadata to a
 specified file.
 """
+import os
 import subprocess
 from collections import namedtuple
 
@@ -85,7 +86,10 @@ class Subler(object):
             file as metadata
         """
         self.source = source
-        self.dest = dest or self.source
+        if dest is None:
+            name, ext = os.path.splitext(self.source)
+            dest = name + ' (1)' + ext
+        self.dest = dest
         self.chapters = chapters
         self.chapters_preview = chapters_preview
         self.delay = delay
@@ -132,8 +136,21 @@ class Subler(object):
         raw = self.existing_metadata_raw
         atoms = []
         for s in raw:
-            key, val = s[:s.find(':')].strip(), s[s.find(':')+1:].strip()
+            key, val = s[:s.find(':')].strip(), s[s.find(':') + 1:].strip()
             atoms.append(Atom(key, val))
+        return atoms
+
+    @property
+    def existing_metadata_collection(self):
+        """AtomCollection representation of the metadata currently contained in
+        the source file
+        """
+        from .tools import AtomCollection
+        raw = self.existing_metadata_raw
+        atoms = AtomCollection()
+        for s in raw:
+            key, val = s[:s.find(':')].strip(), s[s.find(':') + 1:].strip()
+            atoms[key] = val
         return atoms
 
     @property

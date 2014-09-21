@@ -1,5 +1,13 @@
 Release History
 ---------------
+0.4.0 (2014-09-20)
+++++++++++++++++++
+
+* Added subler.tools module
+* Added subler.cli module which provides the interactive pysubler commandline tool
+* Added subler.subler.Subler.existing_metadata_collection property
+* Fixed bug with default Subler dest attribute
+
 0.3.1 (2014-09-14)
 ++++++++++++++++++
 

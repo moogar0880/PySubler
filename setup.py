@@ -27,6 +27,9 @@ setup(
     packages=packages,
     include_package_data=True,
     zip_safe=False,
+    entry_points={
+        'console_scripts': ['pysubler = subler.cli:main']
+    },
     classifiers=(
         'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
@@ -35,6 +38,7 @@ setup(
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.4',
-
+        'Environment :: MacOS X',
+        'Operating System :: MacOS :: MacOS X',
     ),
 )
