@@ -1,4 +1,15 @@
 #!/usr/bin/env python
+from __future__ import print_function
+import sys
+import shutil
+import zipfile
+import subprocess
+
+if sys.version_info[0] == 2:
+    from urllib2 import urlopen
+elif sys.version_info[0] == 3:
+    from urllib.request import urlopen
+
 try:
     from setuptools import setup
 except ImportError:
@@ -15,6 +26,38 @@ with open('README.rst') as f:
     readme = f.read()
 with open('HISTORY.rst') as f:
     history = f.read()
+
+
+def install_subler():
+    """Check to see if we need the SublerCLI Binary, and if so, download and
+    install it to /usr/bin/env/SublerCLI"""
+    url = 'https://subler.googlecode.com/files/SublerCLI-0.19.zip'
+    zip_file = 'SublerCLI-0.19.zip'
+    binary = 'SublerCLI'
+    try:
+        path = subprocess.check_output('which SublerCLI', shell=True)
+        print('SublerCLI found at {}'.format(path.strip()))
+    except subprocess.CalledProcessError as ex:
+        path = ''
+        print('No SublerCLI found.')
+
+    if path.strip() == '':
+        # We know SublerCLI isn't installed or isn't on the user's path
+        with open(zip_file, 'wb') as f:
+            print('Downloading SublerCLI...')
+            content = urlopen(url).read()
+            f.write(content)
+
+        # Extract binary to SublerCLI
+        print('Extracting SublerCLI binary...')
+        zipfile.ZipFile(zip_file).extractall(binary)
+
+        # Move SublerCLI binary into /usr/local/bin
+        print('Moving SublerCLI into place...')
+        shutil.move('{}/{}'.format(binary, binary), '/usr/local/bin/SublerCLI')
+
+install_subler()
+
 
 setup(
     name='subler',
