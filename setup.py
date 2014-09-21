@@ -38,6 +38,7 @@ setup(
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.4',
-
+        'Environment :: MacOS X',
+        'Operating System :: MacOS :: MacOS X',
     ),
 )
