@@ -6,6 +6,7 @@ of :class:`Subler` you can quickly execute the tagging of metadata to a
 specified file.
 """
 import os
+import logging
 import subprocess
 from collections import namedtuple
 
@@ -105,6 +106,7 @@ class Subler(object):
         self.media_kind = media_kind
         self.explicit = explicit
         self.metadata = metadata
+        self._logger = logging.getLogger('subler.Subler')
 
     @property
     def version(self):
@@ -217,4 +219,5 @@ class Subler(object):
         cmd += ' '.join(['-metadata', ''.join(tags)])
         if self.optimize:
             cmd += ' -optimize'
+        self._logger.debug(cmd)
         return subprocess.check_output(cmd, shell=True).decode('UTF-8')
