@@ -6,8 +6,8 @@ __all__ = ['subler_executable']
 
 
 def subler_executable():
-    """Find a localized subler executable and return it's path. If no executable
-    can be found, None is returned
+    """Find a localized subler executable and return it's path. If no
+    executable can be found, None is returned
     """
     try:
         executable = subprocess.check_output('which SublerCLI',

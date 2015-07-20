@@ -1,9 +1,9 @@
 """This module provides an easily scriptable interface to tagging an assortment
 of media types including x264 video, AAC audio, and many others with iTunes
 formatted metadata via the SublerCLI. By simply creating new metadata
-:class:`Atom`'s and specifying any additionally desired variables in an instance
-of :class:`Subler` you can quickly execute the tagging of metadata to a
-specified file.
+:class:`Atom`'s and specifying any additionally desired variables in an
+instance of :class:`Subler` you can quickly execute the tagging of metadata to
+a specified file.
 """
 import os
 import logging
@@ -28,28 +28,29 @@ class Atom(_Atom):
                    'Tempo', 'TV Show', 'TV Episode #', 'TV Network',
                    'TV Episode ID', 'TV Season', 'Description',
                    'Long Description', 'Series Description', 'HD Video',
-                   'Rating Annotation', 'Studio', 'Cast', 'Director', 'Gapless',
-                   'Codirector', 'Producers', 'Screenwriters', 'Lyrics',
-                   'Copyright', 'Encoding Tool', 'Encoded By', 'Keywords',
-                   'Category', 'contentID', 'artistID', 'playlistID', 'genreID',
-                   'composerID', 'XID', 'iTunes Account', 'iTunes Account Type',
-                   'iTunes Country', 'Track Sub-Title', 'Song Description',
-                   'Art Director', 'Arranger', 'Lyricist', 'Acknowledgement',
-                   'Conductor', 'Linear Notes', 'Record Company',
-                   'Original Artist', 'Phonogram Rights', 'Producer',
-                   'Performer', 'Publisher', 'Sound Engineer', 'Soloist',
-                   'Credits', 'Thanks', 'Online Extras', 'Executive Producer',
-                   'Sort Name', 'Sort Artist', 'Sort Album Artist',
-                   'Sort Album', 'Sort Composer', 'Sort TV Show', 'Artwork',
-                   'Name', 'Rating', 'Media Kind')
+                   'Rating Annotation', 'Studio', 'Cast', 'Director',
+                   'Gapless', 'Codirector', 'Producers', 'Screenwriters',
+                   'Lyrics', 'Copyright', 'Encoding Tool', 'Encoded By',
+                   'Keywords', 'Category', 'contentID', 'artistID',
+                   'playlistID', 'genreID', 'composerID', 'XID',
+                   'iTunes Account', 'iTunes Account Type', 'iTunes Country',
+                   'Track Sub-Title', 'Song Description', 'Art Director',
+                   'Arranger', 'Lyricist', 'Acknowledgement', 'Conductor',
+                   'Linear Notes', 'Record Company', 'Original Artist',
+                   'Phonogram Rights', 'Producer', 'Performer', 'Publisher',
+                   'Sound Engineer', 'Soloist', 'Credits', 'Thanks',
+                   'Online Extras', 'Executive Producer', 'Sort Name',
+                   'Sort Artist', 'Sort Album Artist', 'Sort Album',
+                   'Sort Composer', 'Sort TV Show', 'Artwork', 'Name',
+                   'Rating', 'Media Kind')
 
     def is_valid(self):
-        """Performs a check to see if the data in this :class:`Atom` is valid"""
+        """Check that the data in this :class:`Atom` is valid"""
         return self.tag in self._valid_tags
 
     @property
     def data(self):
-        """Return the Subler argument formatted version of this :class:`Atom`"""
+        """The Subler argument formatted version of this :class:`Atom`"""
         return '"{%s:%s}"' % (self.tag, self.value)
 
 
@@ -75,8 +76,8 @@ class Subler(object):
         :param remove: Boolean flag for remove all existing subtitles tracks
         :param optimize: Boolean flag for optimizing the file by moving the
             moov atom at the begining and interleaving the samples
-        :param downmix: downmix audio (mono, stereo, dolby, pl2) from the source
-            file
+        :param downmix: downmix audio (mono, stereo, dolby, pl2) from the
+            source file
         :param rating: A valid US, UK, or German content rating
         :param media_kind: The type of media represented by the source file.
             Valid values are Music, Audiobook, Music Video, Movie, TV Show,
@@ -118,7 +119,8 @@ class Subler(object):
     @property
     def tracks(self):
         """A list of tracks found the source file"""
-        cmd = '{} -source {} -listtracks'.format(self.__executable, self.source)
+        cmd = '{} -source {} -listtracks'.format(self.__executable,
+                                                 self.source)
         output = subprocess.check_output(cmd, shell=True)
         return output.decode('UTF-8').strip().split('\n')
 
@@ -160,8 +162,8 @@ class Subler(object):
         """The content rating of the source file. Valid US content ratings are:
         Not Rated, G, PG, PG-13, R, NC-17, TV-Y, TV-Y7, TV-G, TV-PG, TV-14,
         TV-MA, and Unrated. Valid UK content ratings are: Not Rated, U, Uc, PG,
-        12, 12A, 15, 18, R18, Exempt, Unrated, and Caution. Valid German content
-        ratings are FSK 0, FSK 6, FSK 12, FSK 16, and FSK 18.
+        12, 12A, 15, 18, R18, Exempt, Unrated, and Caution. Valid German
+        content ratings are FSK 0, FSK 6, FSK 12, FSK 16, and FSK 18.
         """
         return self._rating
     @rating.setter

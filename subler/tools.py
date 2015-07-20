@@ -7,10 +7,10 @@ __all__ = ['AtomCollection', 'tag_dict']
 
 
 class AtomCollection(dict):
-    """A dictionary collection of :class:`~subler.subler.Atom` instances. When a
-    tag is added, the tag for it is used as the key to the dictionary, the value
-    for which is an :class:`~subler.subler.Atom` instance. When you key back on
-    an item already in the dictionary the value of that
+    """A dictionary collection of :class:`~subler.subler.Atom` instances. When
+    a tag is added, the tag for it is used as the key to the dictionary, the
+    value for which is an :class:`~subler.subler.Atom` instance. When you key
+    back on an item already in the dictionary the value of that
     :class:`~subler.subler.Atom` is returned. Thus, if you know a key 'Artist'
     exists, you can get the value of that tag by doing
     ``my_collection['Artist']``
@@ -49,9 +49,9 @@ class AtomCollection(dict):
 def tag_dict(d, source, **kwargs):
     """Normally, you are only allowed to tag using a list of
     :class:`~subler.subler.Atom` objects. This function will allow you to
-    provide a dict of metadata to be tagged via a :class:`~subler.subler.Subler`
-    instance. Note: the same :class:`~subler.subler.Atom` limitations of valid
-    tags will still apply
+    provide a dict of metadata to be tagged via a
+    :class:`~subler.subler.Subler` instance. Note: the same
+    :class:`~subler.subler.Atom` limitations of valid tags will still apply
 
     :param d: A dict of Atom data
     :param source: The source file you wish to write the metadata to
