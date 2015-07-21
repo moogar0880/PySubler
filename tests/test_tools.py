@@ -2,6 +2,7 @@
 """Tests for the utilities found in the `subler.tools` module"""
 import unittest
 
+from copy import copy
 from mock import patch
 
 from subler import Atom
@@ -96,7 +97,7 @@ class TagDictTests(unittest.TestCase):
         """
         source = '/Some/File/Path'
         media_kind = 'TV Show'
-        tags, vals = self.tags.copy(), self.values.copy()
+        tags, vals = copy(self.tags), copy(self.values)
         tags.append('Artist')
         vals.append('Firefly')
 
