@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 """Tests for the utilities found in the `subler.tools` module"""
-import subprocess
 import unittest
 
 from mock import patch
