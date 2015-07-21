@@ -54,7 +54,9 @@ class Atom(_Atom):
 
 
 class Subler(object):
-    """An OO interface to the SublerCLI"""
+    """A Python interface to the SublerCLI that can be used to easily read
+    from and write to a specified source file.
+    """
     __executable = subler_executable()
 
     def __init__(self, source, dest=None, chapters=None, delay=None,
