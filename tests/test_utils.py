@@ -7,7 +7,7 @@ from mock import patch
 
 from subler.utils import subler_executable, get_output
 
-check_output = 'subler.utils.subprocess.check_output'
+CHECK_OUTPUT = 'subler.utils.subprocess.checkout_output'
 
 
 class ExecutableTests(unittest.TestCase):
@@ -18,17 +18,17 @@ class ExecutableTests(unittest.TestCase):
         expected
         """
         out = b'/usr/bin/SublerCLI'
-        with patch(check_output, return_value=out):
+        with patch(CHECK_OUTPUT, return_value=out):
             self.assertEqual(subler_executable(), out.decode('UTF-8'))
 
     def test_empty_string(self):
         """Test that an empty string result is handled as expected"""
-        with patch(check_output, return_value=b''):
+        with patch(CHECK_OUTPUT, return_value=b''):
             self.assertEqual(subler_executable(), 'SublerCLI')
 
     def test_shell_error(self):
         """Test that subprocess.CalledProcessErrors are handled gracefully"""
-        with patch(check_output,
+        with patch(CHECK_OUTPUT,
                    side_effect=subprocess.CalledProcessError(1, '')):
             self.assertEqual(subler_executable(), '')
 
@@ -41,17 +41,17 @@ class GetOutputTests(unittest.TestCase):
         self.expected = self.date_output.decode('UTF-8').strip()
 
     def test_list(self):
-        """Test that check_output properly handles accepting and passing off a
+        """Test that CHECK_OUTPUT properly handles accepting and passing off a
         provided list of commandline arguments
         """
         args = ['date']
-        with patch(check_output, return_value=self.date_output):
+        with patch(CHECK_OUTPUT, return_value=self.date_output):
             self.assertEqual(get_output(args), self.expected)
 
     def test_str(self):
-        """Test that check_output properly handles accepting and passing off a
+        """Test that CHECK_OUTPUT properly handles accepting and passing off a
         provided string of commandline arguments
         """
         args = 'date'
-        with patch(check_output, return_value=self.date_output):
+        with patch(CHECK_OUTPUT, return_value=self.date_output):
             self.assertEqual(get_output(args), self.expected)
