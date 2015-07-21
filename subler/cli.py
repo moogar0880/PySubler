@@ -16,7 +16,8 @@ __author__ = 'Jon Nappi'
 def parse_args():
     """Parse command line arguments"""
     parser = argparse.ArgumentParser()
-    parser.add_argument('source', type=str, help='The source file to be tagged')
+    parser.add_argument('source', type=str,
+                        help='The source file to be tagged')
     return parser.parse_args()
 
 
@@ -59,7 +60,7 @@ def parse_user_input(user_input):
     lines = user_input.split('\n')
     for line in lines:
         colon = line.find(':')
-        key, val = line[:colon], line[colon+1:]
+        key, val = line[:colon], line[colon + 1:]
         if val.strip() != '':
             metadata[key[1:-1].strip()] = val.strip()
     return metadata
@@ -72,9 +73,10 @@ def main():
     source = parse_args().source
     tagger = Subler(source)
     fields = list(Atom._valid_tags) + ['dest', 'chapters', 'delay',
-                                       'chapters_preview', 'height', 'language',
-                                       'remove', 'optimize', 'downmix',
-                                       'rating', 'media_kind', 'explicit']
+                                       'chapters_preview', 'height',
+                                       'language', 'remove', 'optimize',
+                                       'downmix', 'rating', 'media_kind',
+                                       'explicit']
     existing = tagger.existing_metadata_collection
     content = build_tmp_file_content(fields, existing).strip()
 

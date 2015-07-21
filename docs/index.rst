@@ -9,7 +9,7 @@ subler: The Unofficial Python-Subler Interface
 Release v\ |version|. (:ref:`Installation <install>`)
 
 With the use of this module, it's now even easier to script the writing of iTunes
-style metadata to your media files using the `SublerCLI <https://code.google.com/p/subler/wiki/SublerCLIHelp>`_.
+style metadata to your media files using the `SublerCLI <https://bitbucket.org/galad87/sublercli>`_.
 
 Atoms
 -----

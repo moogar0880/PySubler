@@ -1,5 +1,14 @@
 Release History
 ---------------
+0.4.1 (2015-07-21)
+++++++++++++++++++
+
+* Fixed an issue with improperly escaping metadata for use with `subprocess.check_output`
+* Added improved DEBUG logging for generated commands and their results
+* Improved the default `Subler.dest` attibute to create a unique destination filename
+* Added a collection of automated tests for Travis CI
+* Added Travis CI support
+
 0.4.0 (2014-09-20)
 ++++++++++++++++++
 
