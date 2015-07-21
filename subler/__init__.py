@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """This module provides an easily scriptable interface to tagging x264 video
 format metadata via the SublerCLI.
 """

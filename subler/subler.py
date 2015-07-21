@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """This module provides an easily scriptable interface to tagging an assortment
 of media types including x264 video, AAC audio, and many others with iTunes
 formatted metadata via the SublerCLI. By simply creating new metadata
