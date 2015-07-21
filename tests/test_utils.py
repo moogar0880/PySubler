@@ -7,7 +7,7 @@ from mock import patch
 
 from subler.utils import subler_executable, get_output
 
-CHECK_OUTPUT = 'subler.utils.subprocess.checkout_output'
+CHECK_OUTPUT = 'subler.utils.subprocess.check_output'
 
 
 class ExecutableTests(unittest.TestCase):
