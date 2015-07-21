@@ -1,8 +1,16 @@
 PySubler
 ========
 
+.. image:: https://travis-ci.org/moogar0880/PySubler.svg
+    :target: https://travis-ci.org/moogar0880/PySubler
+    :alt: Travis CI Status
+
+.. image:: https://coveralls.io/repos/moogar0880/PySubler/badge.svg
+    :target: https://coveralls.io/r/moogar0880/PySubler
+    :alt: Coverage
+
 Simple Python interface to the SublerCLI utility to make scripting metadata
-tagging with `SublerCLI <https://code.google.com/p/subler/wiki/SublerCLIHelp>`_. even easier.
+tagging with `SublerCLI <https://bitbucket.org/galad87/sublercli>`_. even easier.
 Full documentation can be found on `Read The Docs <http://pysubler.readthedocs.org/en/latest/>`_.
 
 Install
