@@ -17,7 +17,6 @@ publish:
 	# Register and upload packages to PyPi, then clean up
 	python setup.py register
 	python setup.py sdist upload
-	rm MANIFEST
 	rm -rf dist
 	rm -rf subler.egg-info
 
