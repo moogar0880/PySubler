@@ -1,6 +1,6 @@
 Release History
 ---------------
-0.4.1 (2015-07-21)
+0.4.2 (2015-07-21)
 ++++++++++++++++++
 
 * Fixed an issue with improperly escaping metadata for use with `subprocess.check_output`
