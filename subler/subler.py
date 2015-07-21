@@ -7,10 +7,9 @@ a specified file.
 """
 import os
 import logging
-import subprocess
 from collections import namedtuple
 
-from .utils import subler_executable
+from .utils import subler_executable, get_output
 
 __author__ = 'Jon Nappi'
 __all__ = ['Atom', 'Subler']
@@ -51,7 +50,7 @@ class Atom(_Atom):
     @property
     def data(self):
         """The Subler argument formatted version of this :class:`Atom`"""
-        return '"{%s:%s}"' % (self.tag, self.value)
+        return '{%s:%s}' % (self.tag, self.value)
 
 
 class Subler(object):
@@ -89,8 +88,7 @@ class Subler(object):
         """
         self.source = source
         if dest is None:
-            name, ext = os.path.splitext(self.source)
-            dest = name + ' (1)' + ext
+            dest = self._generate_dest()
         self.dest = dest
         self.chapters = chapters
         self.chapters_preview = chapters_preview
@@ -109,28 +107,39 @@ class Subler(object):
         self.metadata = metadata
         self._logger = logging.getLogger('subler.Subler')
 
+    def _generate_dest(self):
+        """Generate a destination file name for the provided source file. This
+        function will increment a number to append to the file name in order to
+        distinguish it from other copies of the same file name
+
+        :return: The absolute path for the destination file
+        """
+        name, ext = os.path.splitext(self.source)
+        counter = 1
+        dest = name + ' ({})'.format(counter) + ext
+
+        while os.path.exists(dest):
+            counter += 1
+            dest = name + ' ({})'.format(counter) + ext
+        return dest
+
     @property
     def version(self):
         """The current version of your systems SublerCLI package"""
-        cmd = '{} -version'.format(self.__executable)
-        output = subprocess.check_output(cmd, shell=True)
-        return output.decode('UTF-8').strip()
+        cmd = [self.__executable, '-version']
+        return get_output(cmd)
 
     @property
     def tracks(self):
         """A list of tracks found the source file"""
-        cmd = '{} -source {} -listtracks'.format(self.__executable,
-                                                 self.source)
-        output = subprocess.check_output(cmd, shell=True)
-        return output.decode('UTF-8').strip().split('\n')
+        cmd = [self.__executable, '-source', self.source, '-listtracks']
+        return get_output(cmd).split('\n')
 
     @property
     def existing_metadata_raw(self):
         """The metadata currently contained in the source file"""
-        cmd = '{} -source {} -listmetadata'.format(self.__executable,
-                                                   self.source)
-        output = subprocess.check_output(cmd, shell=True)
-        return output.decode('UTF-8').strip().split('\n')
+        cmd = [self.__executable, '-source', self.source, '-listmetadata']
+        return get_output(cmd).split('\n')
 
     @property
     def existing_metadata(self):
@@ -208,18 +217,18 @@ class Subler(object):
         """Apply the specified metadata to the source file and output it to
         the specified destination file
         """
-        cmd = '{} -source "{}" '.format(self.__executable, self.source)
+        cmd = [self.__executable, '-source', self.source]
 
         if self.dest:
-            cmd += '-dest "{}" '.format(self.dest)
+            cmd += ['-dest', self.dest]
         self.metadata.append(Atom('Media Kind', self.media_kind))
         if self._rating is not None:
             self.metadata.append(Atom('Rating', self.rating))
         if self.explicitness:
             self.metadata.append(Atom('Content Rating', self.explicitness))
         tags = [atom.data for atom in self.metadata if atom.is_valid()]
-        cmd += ' '.join(['-metadata', ''.join(tags)])
+        cmd += ['-metadata', ''.join(tags)]
         if self.optimize:
-            cmd += ' -optimize'
+            cmd += ['-optimize']
         self._logger.debug(cmd)
-        return subprocess.check_output(cmd, shell=True).decode('UTF-8')
+        return get_output(cmd)
